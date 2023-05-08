@@ -1,5 +1,6 @@
 import androidx.compose.material.MaterialTheme
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.layout.Column
 import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -17,9 +18,24 @@ fun App() {
 
     MaterialTheme {
         Button(onClick = {
-            text = "Hello, Desktop!"
+            Column {
+                Button(onClick = {
+
+            }){
+                Text("Insertar mascota")
+            }
+                Button(onClick = {
+
+                }){
+                    Text("Mostrar un animal")
+                }
+                Button(onClick = {
+
+                }){
+                    Text("Mostrar todos los animales del sistema")
+                } }
         }) {
-            Text(text)
+            Text("Comenzar")
         }
     }
 }
