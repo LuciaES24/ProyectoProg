@@ -1,7 +1,9 @@
 import Clases.Gato
 import Clases.Perro
 import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
@@ -13,14 +15,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.key.Key.Companion.C
 import androidx.compose.ui.input.key.Key.Companion.R
 import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 @Preview
 fun App() {
@@ -34,11 +39,12 @@ fun App() {
             Column (
                 modifier = Modifier
                     .padding(16.dp)
-                    .fillMaxSize(),
+                    .fillMaxSize()
+                    .background(color = Color(245,255,250)),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ){
-                Button(onClick = {
+                Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                     visible=1
                     conectarBase()
                 }) {
@@ -55,22 +61,22 @@ fun App() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.Center
                 ) {
-                    Button(onClick = {
+                    Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                         accion = 1
                     }) {
                         Text("Registrar animal")
                     }
-                    Button(onClick = {
+                    Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                         accion = 2
                     }) {
                         Text("Mostrar un animal")
                     }
-                    Button(onClick = {
+                    Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                         accion = 3
                     }) {
                         Text("Mostrar todos los animales")
                     }
-                    Button(onClick = {
+                    Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                         visible=0
                     }) {
                         Text("Atras")
@@ -93,18 +99,18 @@ fun App() {
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                            OutlinedButton(onClick = {
+                            TextButton(onClick = {
                                 animal = "Perro"
                             }){
                                 Text("Perro")
                             }
-                            OutlinedButton(onClick = {
+                            TextButton(onClick = {
                                 animal = "Gato"
                             }){
                                 Text("Gato")
                             }
                         }
-                        OutlinedButton(onClick = {
+                        Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             accion=0
                         }){
                             Text("Atras")
@@ -113,14 +119,14 @@ fun App() {
                 }
                 if (animal=="Perro"){
                     var raza by remember { mutableStateOf("") }
-                    var ppp by remember { mutableStateOf("NO") }
+                    var ppp by remember { mutableStateOf("") }
                     Column (
                         modifier = Modifier
                         .padding(16.dp)
                         .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center){
-                        Text("Perro")
+                        Text("Perro", style = TextStyle(fontSize = 30.sp))
                         TextField(
                             value = nombre,
                             onValueChange = {nombre=it},
@@ -146,24 +152,24 @@ fun App() {
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ){
-                            Button(onClick = {
+                            TextButton(onClick = {
                                 ppp="SI"
                             }){
                                 Text("Si")
                             }
-                            Button(onClick = {
+                            TextButton(onClick = {
                                 ppp="NO"
                             }){
                                 Text("No")
                             }
                         }
-                        Button(onClick = {
+                        Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             val perro = Perro(nombre,fecha,sexo,raza,ppp)
                             insertarPerro(perro)
-                        }){
+                        }, enabled = nombre.length != 0 && fecha.length != 0 && sexo.length!=0 && raza.length != 0 && ppp.length != 0){
                             Text("Registrar")
                         }
-                        Button(onClick = {
+                        Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             animal=""
                         }){
                             Text("Atras")
@@ -178,7 +184,7 @@ fun App() {
                             .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally,
                         verticalArrangement = Arrangement.Center){
-                        Text("Gato")
+                        Text("Gato", style = TextStyle(fontSize = 30.sp))
                         TextField(
                             value = nombre,
                             onValueChange = {nombre=it},
@@ -199,13 +205,13 @@ fun App() {
                             onValueChange = {raza=it},
                             label = { Text("Raza") }
                         )
-                        Button(onClick = {
+                        Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             val gato = Gato(nombre,fecha,sexo,raza)
                             insertarGato(gato)
-                        }){
+                        }, enabled = nombre.length!=0 || fecha.length!=0||sexo.length!=0||raza.length!=0){
                             Text("Registrar")
                         }
-                        Button(onClick = {
+                        Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             animal=""
                         }){
                             Text("Atras")
