@@ -169,11 +169,21 @@ fun App() {
                         Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             val perro = Perro(nombre,fecha,sexo,raza,ppp)
                             insertarPerro(perro)
+                            nombre = ""
+                            fecha = ""
+                            sexo = ""
+                            raza = ""
+                            ppp = ""
                         }, enabled = nombre.length != 0 && fecha.length != 0 && sexo.length!=0 && raza.length != 0 && ppp.length != 0){
                             Text("Registrar")
                         }
                         Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             animal=""
+                            nombre = ""
+                            fecha = ""
+                            sexo = ""
+                            raza = ""
+                            ppp = ""
                         }){
                             Text("Atras")
                         }
@@ -211,11 +221,19 @@ fun App() {
                         Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             val gato = Gato(nombre,fecha,sexo,raza)
                             insertarGato(gato)
+                            nombre = ""
+                            fecha = ""
+                            sexo = ""
+                            raza = ""
                         }, enabled = nombre.length!=0 || fecha.length!=0||sexo.length!=0||raza.length!=0){
                             Text("Registrar")
                         }
                         Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                             animal=""
+                            nombre = ""
+                            fecha = ""
+                            sexo = ""
+                            raza = ""
                         }){
                             Text("Atras")
                         }
