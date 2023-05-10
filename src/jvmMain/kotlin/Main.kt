@@ -7,18 +7,14 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.paint
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.C
-import androidx.compose.ui.input.key.Key.Companion.R
+import androidx.compose.ui.graphics.painter.BitmapPainter
+import androidx.compose.ui.res.loadImageBitmap
 import androidx.compose.ui.res.loadSvgPainter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -26,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
-
+import java.io.File
+import java.net.URL
 
 
 @Composable
 @Preview
 fun App() {
-    var text by remember { mutableStateOf("") }
     var visible by remember { mutableStateOf(0) }
     var accion by remember { mutableStateOf(0) }
     var animal by remember { mutableStateOf("") }
@@ -41,11 +37,10 @@ fun App() {
         if (visible == 0){
             Column (
                 modifier = Modifier
-                    .padding(16.dp)
                     .fillMaxSize()
                     .background(color = Color(245,255,250)),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.SpaceEvenly
             ){
                 Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                     visible=1
@@ -59,10 +54,10 @@ fun App() {
             if (accion == 0){
                 Column(
                     modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
+                        .fillMaxSize()
+                        .background(color = Color(245,255,250)),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
+                    verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                         accion = 1
@@ -93,10 +88,10 @@ fun App() {
                 if (animal == ""){
                     Column (
                         modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxSize(),
+                            .fillMaxSize()
+                            .background(color = Color(245,255,250)),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center
+                        verticalArrangement = Arrangement.SpaceEvenly
                             ){
                         Row (
                             horizontalArrangement = Arrangement.Center,
@@ -125,10 +120,11 @@ fun App() {
                     var ppp by remember { mutableStateOf("") }
                     Column (
                         modifier = Modifier
-                        .padding(16.dp)
-                        .fillMaxSize(),
+                            .fillMaxSize()
+                            .background(color = Color(245,255,250)),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center){
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ){
                         Text("Perro", style = TextStyle(fontSize = 30.sp))
                         TextField(
                             value = nombre,
@@ -193,10 +189,11 @@ fun App() {
                     var raza by remember { mutableStateOf("") }
                     Column (
                         modifier = Modifier
-                            .padding(16.dp)
-                            .fillMaxSize(),
+                            .fillMaxSize()
+                            .background(color = Color(245,255,250)),
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        verticalArrangement = Arrangement.Center){
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ){
                         Text("Gato", style = TextStyle(fontSize = 30.sp))
                         TextField(
                             value = nombre,
@@ -225,7 +222,7 @@ fun App() {
                             fecha = ""
                             sexo = ""
                             raza = ""
-                        }, enabled = nombre.length!=0 || fecha.length!=0||sexo.length!=0||raza.length!=0){
+                        }, enabled = nombre.length!=0 && fecha.length!=0 && sexo.length!=0 && raza.length!=0){
                             Text("Registrar")
                         }
                         Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
@@ -240,7 +237,50 @@ fun App() {
                     }
                 }
             }
-        }
+            if (accion == 2){
+                Column (
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(color = Color(245,255,250)),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Text("¿Qué animal estás buscando?", style = TextStyle(fontSize = 30.sp))
+                    Row (
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ){
+                        TextButton(onClick = {
+                            animal = "Perro"
+                        }){
+                            Text("Perro")
+                        }
+                        TextButton(onClick = {
+                            animal = "Gato"
+                        }){
+                            Text("Gato")
+                        }
+                    }
+                    if (animal == "Perro"){
+                        var codigoPerro by remember { mutableStateOf("") }
+                        TextField(
+                            value = codigoPerro,
+                            onValueChange = {codigoPerro=it}
+                        )
+                        Button(onClick = {
+                            var resultadoBusqueda by remember { mutableStateOf(buscarPerro(codigoPerro.toInt())) }
+                            var nombre = buscarPerro(codigoPerro.toInt())[1]
+                            var fecha = buscarPerro(codigoPerro.toInt())[2]
+                            var sexo = buscarPerro(codigoPerro.toInt())[3]
+                            var raza = buscarPerro(codigoPerro.toInt())[4]
+                            var ppp = buscarPerro(codigoPerro.toInt())[5]
+
+                        }){
+                            Text("Buscar")
+                        }
+                }
+            }
+        }}
     }
 }
 

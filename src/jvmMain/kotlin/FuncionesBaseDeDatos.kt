@@ -46,7 +46,7 @@ fun insertarGato(gato:Gato){
     stmt?.executeUpdate()
 }
 
-fun buscarrPerro(cod:Int): List<String?> {
+fun buscarPerro(cod:Int): List<String?> {
     val stmt = conectarBase()?.prepareStatement("SELECT COD_ANIMAL , NOMBRE , FECHA_NAC , SEXO , RAZA , PPP FROM PERROS WHERE COD_ANIMAL = ?")
     stmt?.setInt(1,cod)
     val result = stmt?.executeQuery()
