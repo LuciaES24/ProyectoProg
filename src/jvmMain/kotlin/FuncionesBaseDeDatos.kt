@@ -1,3 +1,5 @@
+import Clases.Gato
+import Clases.Perro
 import java.sql.*
 
 fun conectarBase(): Connection? {
@@ -9,24 +11,38 @@ fun conectarBase(): Connection? {
     return conexion
 }
 
-fun insertarPerro(cod:Int, name:String,fec:String, s:String, ra:String, p:Boolean){
-    val stmt = conectarBase()?.prepareStatement("INSERT INTO PERROS  (COD_ANIMAL , NOMBRE , FECHA_NAC , SEXO , RAZA , PPP ) VALUES (?, ?, ?, ?, ?, ?)")
-    stmt?.setInt(1, cod)
-    stmt?.setString(2, name)
-    stmt?.setString(3, fec)
-    stmt?.setString(4, s)
-    stmt?.setString(5, ra)
-    stmt?.setBoolean(5, p)
+fun ultimoPerro() : String{
+    val stmt = conectarBase()?.prepareStatement("SELECT MAX(COD_ANIMAL) FROM PERROS ")
+    val result = stmt?.executeQuery()
+    val codigo = result?.getInt("COD_ANIMAL")
+    return codigo.toString()
+}
+
+fun ultimoGato() : String{
+    val stmt = conectarBase()?.prepareStatement("SELECT MAX(COD_ANIMAL) FROM GATOS ")
+    val result = stmt?.executeQuery()
+    val codigo = result?.getInt("COD_ANIMAL")
+    return codigo.toString()
+}
+
+fun insertarPerro(perro:Perro){
+    val stmt = conectarBase()?.prepareStatement("INSERT INTO PERROS (COD_ANIMAL , NOMBRE , FECHA_NAC , SEXO , RAZA , PPP ) VALUES (?, ?, ?, ?, ?, ?)")
+    stmt?.setInt(1, perro.codigo)
+    stmt?.setString(2, perro.nombre)
+    stmt?.setString(3, perro.fecha_nac)
+    stmt?.setString(4, perro.sexo)
+    stmt?.setString(5, perro.razaPerro)
+    stmt?.setString(5, perro.ppp)
     stmt?.executeUpdate()
 }
 
-fun insertarGato(cod:Int, name:String,fec:String, s:String, ra:String){
+fun insertarGato(gato:Gato){
     val stmt = conectarBase()?.prepareStatement("INSERT INTO GATOS  (COD_ANIMAL , NOMBRE , FECHA_NAC , SEXO , RAZA ) VALUES (?, ?, ?, ?, ?)")
-    stmt?.setInt(1, cod)
-    stmt?.setString(2, name)
-    stmt?.setString(3, fec)
-    stmt?.setString(4, s)
-    stmt?.setString(5, ra)
+    stmt?.setInt(1, gato.codigo)
+    stmt?.setString(2, gato.nombre)
+    stmt?.setString(3, gato.fecha_nac)
+    stmt?.setString(4, gato.sexo)
+    stmt?.setString(5, gato.razaGato)
     stmt?.executeUpdate()
 }
 
