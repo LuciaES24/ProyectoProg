@@ -24,6 +24,8 @@ import androidx.compose.ui.window.Window
 import androidx.compose.ui.window.application
 import java.io.File
 import java.net.URL
+import java.sql.DriverManager
+import java.sql.*
 
 
 @Composable
@@ -32,6 +34,10 @@ fun App() {
     var visible by remember { mutableStateOf(0) }
     var accion by remember { mutableStateOf(0) }
     var animal by remember { mutableStateOf("") }
+    val url = "jdbc:oracle:thin:@localhost:1521:xe"
+    val usuario = "PROYECTO"
+    val contrasena = "PROYECTO"
+    Class.forName("oracle.jdbc.driver.OracleDriver")
 
     MaterialTheme {
         if (visible == 0){
@@ -44,7 +50,6 @@ fun App() {
             ){
                 Button(shape = RoundedCornerShape(50), colors = ButtonDefaults.buttonColors(backgroundColor = Color(60,179,113)), onClick = {
                     visible=1
-                    conectarBase()
                 }) {
                     Text("Comenzar")
                 }
@@ -238,6 +243,7 @@ fun App() {
                 }
             }
             if (accion == 2){
+                var conectado by remember { mutableStateOf("") }
                 Column (
                     modifier = Modifier
                         .fillMaxSize()
@@ -261,26 +267,58 @@ fun App() {
                             Text("Gato")
                         }
                     }
-                    if (animal == "Perro"){
-                        var codigoPerro by remember { mutableStateOf("") }
+                }
+                if (animal == "Perro"){
+                    var codigoPerro by remember { mutableStateOf("") }
+                    Column (
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(color = Color(245,255,250)),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.SpaceEvenly
+                    ){
                         TextField(
                             value = codigoPerro,
-                            onValueChange = {codigoPerro=it}
+                            onValueChange = {codigoPerro=it},
+                            label = { Text("Codigo del perro") }
                         )
                         Button(onClick = {
-                            var resultadoBusqueda by remember { mutableStateOf(buscarPerro(codigoPerro.toInt())) }
-                            var nombre = buscarPerro(codigoPerro.toInt())[1]
-                            var fecha = buscarPerro(codigoPerro.toInt())[2]
-                            var sexo = buscarPerro(codigoPerro.toInt())[3]
-                            var raza = buscarPerro(codigoPerro.toInt())[4]
-                            var ppp = buscarPerro(codigoPerro.toInt())[5]
-
+                            conectado = "Si"
                         }){
                             Text("Buscar")
                         }
+                    }
+                    if (conectado=="si"){
+                        val conexion = DriverManager.getConnection(url, usuario, contrasena)
+                        val stmt = conexion.prepareStatement("SELECT COD_ANIMAL , NOMBRE , FECHA_NAC , SEXO , RAZA , PPP FROM PERROS WHERE COD_ANIMAL = ?")
+                        stmt.setInt(1,codigoPerro.toInt())
+                        val result = stmt.executeQuery()
+                        val codigo = result.getInt("COD_ANIMAL")
+                        val name = result.getString("NOMBRE")
+                        val fec = result.getString("FECHA_NAC")
+                        val s = result.getString("SEXO")
+                        val ra = result.getString("RAZA")
+                        val p = result.getString("PPP")
+                        var resultadoImprimir = "Codigo: $codigo\nNombre: $name\nFecha de nacimiento: $fec\nSexo: $s\nRaza: $ra\nPPP: $p"
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .background(color = Color(245,255,250)),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            OutlinedTextField(
+                                value = resultadoImprimir,
+                                onValueChange = {resultadoImprimir=it},
+                                maxLines = 6,
+                                readOnly = true,
+                                modifier = Modifier.width(200.dp)
+                            )
+                        }
+                    }
                 }
             }
-        }}
+        }
     }
 }
 
