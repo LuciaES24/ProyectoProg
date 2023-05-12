@@ -7,9 +7,16 @@ abstract class Animal {
     var sexo = ""
 
 
-    constructor(name:String, fecha:String, s:String){
+    constructor(cod:Int,name:String, fecha:String, s:String){
+        codigo = cod
         nombre = name
         fecha_nac = fecha
         sexo = s
     }
+
+    override fun toString(): String {
+        return "Codigo: $codigo\nNombre: $nombre\nFecha de nacimiento: $fecha_nac\nSexo: $sexo"
+    }
+
+
 }

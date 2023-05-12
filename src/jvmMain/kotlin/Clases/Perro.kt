@@ -1,14 +1,15 @@
 package Clases
 
-import ultimoPerro
-
 class Perro : Animal {
     var razaPerro = ""
     var ppp = ""
 
-    constructor(name:String, fecha:String, s:String, raza:String, p:String):super(name,fecha,s){
-        codigo = ultimoPerro().toInt()+1
+    constructor(cod:Int, name:String, fecha:String, s:String, raza:String, p:String):super(cod,name,fecha,s){
         razaPerro=raza
         ppp = p
+    }
+
+    override fun toString(): String {
+        return "Perro\n"+super.toString()+"\nRaza: $razaPerro\nPPP: $ppp"
     }
 }
